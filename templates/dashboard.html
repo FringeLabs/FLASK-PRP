@@ -6,31 +6,24 @@
     <title>Academic Analytics Dashboard</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link rel="stylesheet" href="static/css/dashboard.css">
 </head>
 <body>
     <div class="container">
         <h1>📊 Academic Analytics Dashboard</h1>
         <p class="subtitle">
-            Made with ❤️ by 
-            <a href="https://github.com/FringeLabs" target="_blank">FringeLabs</a>
-        </p>
-        
+    Made with ❤️ by 
+    <a href="https://github.com/FringeLabs" target="_blank" style="color: #a5b4fc; text-decoration: none; font-weight: 500;">
+        FringeLabs
+    </a>
+</p>
         <div class="controls">
             <div class="control-group">
                 <label for="streamSelect">Select Stream</label>
-                <select id="streamSelect" onchange="updateStreamSelection()">
+                <select id="streamSelect" onchange="updateDashboard()">
                     <option value="">-- Choose Stream --</option>
                 </select>
             </div>
-            
-            <div class="control-group">
-                <label for="yearSelect">Select Year</label>
-                <select id="yearSelect" onchange="updateDashboard()" disabled>
-                    <option value="all">Regular & NonRegular</option>
-                </select>
-            </div>
-            
             <div class="control-group">
                 <label for="subjectSelect">Select Subject</label>
                 <select id="subjectSelect" onchange="updateSubjectView()">
@@ -51,32 +44,23 @@
     </div>
 
     <script>
-        let rawAnalysisData = null; 
-        let processedData = null;   
+        let analysisData = null;
         let currentStream = '';
-        let currentYear = 'all';
         let currentSubject = 'overview';
         let charts = {};
         
         Chart.register(ChartDataLabels);
 
         async function loadData() {
-            
-            rawAnalysisData = JSON.parse('{{ analysis_data | tojson | safe }}');
-            
-            populateStreamSelect();
+                analysisData = JSON.parse('{{ analysis_data | tojson | safe }}');
+                populateStreamSelect();
         }
 
         function populateStreamSelect() {
             const streamSelect = document.getElementById('streamSelect');
             streamSelect.innerHTML = '<option value="">-- Choose Stream --</option>';
             
-            const allStreams = new Set();
-            Object.values(rawAnalysisData).forEach(yearData => {
-                Object.keys(yearData).forEach(stream => allStreams.add(stream));
-            });
-            
-            Array.from(allStreams).sort().forEach(stream => {
+            Object.keys(analysisData).forEach(stream => {
                 const option = document.createElement('option');
                 option.value = stream;
                 option.textContent = stream;
@@ -84,160 +68,43 @@
             });
         }
 
-        function updateStreamSelection() {
-    currentStream = document.getElementById('streamSelect').value;
-    const yearSelect = document.getElementById('yearSelect');
-    const downloadBtn = document.getElementById('downloadBtn');
-    
-    if (!currentStream) {
-        yearSelect.disabled = true;
-        yearSelect.innerHTML = '<option value="all">Regular & Non Regular</option>';
-        downloadBtn.disabled = true;
-        return;
-    }
-
-    
-    const availableYears = [];
-    Object.keys(rawAnalysisData).forEach(year => {
-        if (rawAnalysisData[year][currentStream]) {
-            availableYears.push(year);
-        }
-    });
-    
-    availableYears.sort((a, b) => b - a); 
-
-    
-    yearSelect.innerHTML = '';
-    const allOption = document.createElement('option');
-    allOption.value = 'all';
-    allOption.textContent = 'Regular & Non-Regular (All Years)';
-    yearSelect.appendChild(allOption);
-
-    if (availableYears.length > 0) {
-        const currentYearOption = document.createElement('option');
-        currentYearOption.value = availableYears[0];
-        currentYearOption.textContent = `Latest Year (${availableYears[0]})`;
-        yearSelect.appendChild(currentYearOption);
-
-        if (availableYears.length > 1) {
-            const previousYearsOption = document.createElement('option');
-            previousYearsOption.value = 'previous';
-            previousYearsOption.textContent = 'Previous Years (All previous)';
-            yearSelect.appendChild(previousYearsOption);
-        }
-
-        
-        availableYears.forEach(y => {
-            const yearOpt = document.createElement('option');
-            yearOpt.value = y;
-            yearOpt.textContent = `Year 20${y} Only`;
-            yearSelect.appendChild(yearOpt);
-        });
-    }
-    
-    yearSelect.disabled = false;
-    currentYear = 'all';
-    updateDashboard();
-}
-
-function processDataForSelection() {
-    if (!currentStream) return null;
-    
-    const availableYears = Object.keys(rawAnalysisData)
-        .filter(year => rawAnalysisData[year][currentStream])
-        .sort((a, b) => b - a);
-    
-    let yearsToProcess = [];
-    
-    if (currentYear === 'all') {
-        yearsToProcess = availableYears;
-    } else if (currentYear === 'previous') {
-        yearsToProcess = availableYears.slice(1); 
-    } else {
-        yearsToProcess = [currentYear];
-    }
-
-    
-    const mergedStudents = {};
-    const stats = {
-        appeared: 0,
-        passed: 0,
-        subjects: {},
-        grade_count: {}
-    };
-    
-    yearsToProcess.forEach(year => {
-        const yearStreamData = rawAnalysisData[year][currentStream];
-        
-        Object.entries(yearStreamData).forEach(([studentId, subjects]) => {
-            mergedStudents[studentId] = subjects;
-            stats.appeared++;
-            
-            const grades = Object.values(subjects).filter(v => 
-                typeof v === 'string' && v.match(/^[SABCDFP+]|Absent$/)
-            );
-            
-            const hasFailed = grades.some(g => g === 'F' || g === 'Absent');
-            if (!hasFailed && grades.length > 0) {
-                stats.passed++;
-            }
-            
-            Object.entries(subjects).forEach(([subCode, grade]) => {
-                if (typeof grade !== 'string' || !grade.match(/^[SABCDFP+]|Absent$/)) return;
-                
-                stats.grade_count[grade] = (stats.grade_count[grade] || 0) + 1;
-                
-                if (!stats.subjects[subCode]) {
-                    stats.subjects[subCode] = { appeared: 0, passed: 0 };
-                }
-                
-                stats.subjects[subCode].appeared++;
-                if (grade !== 'F' && grade !== 'Absent') stats.subjects[subCode].passed++;
-                
-                const gradeKey = `no_of_${grade}_grades`;
-                stats.subjects[subCode][gradeKey] = (stats.subjects[subCode][gradeKey] || 0) + 1;
-            });
-        });
-    });
-    
-    return { students: mergedStudents, stats };
-}
-
-
         function updateDashboard() {
-    // ... (omitted previous code for brevity)
+            currentStream = document.getElementById('streamSelect').value;
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            if (!currentStream) {
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = `
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                    </svg>
+                    Download Stream Data
+                `;
+                return;
+            }
 
-    processedData = processDataForSelection();
-    
-    // ... (omitted previous code for brevity)
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = `
+                <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                </svg>
+                Download ${currentStream} Data
+            `;
 
-    const subjectSelect = document.getElementById('subjectSelect');
-    subjectSelect.innerHTML = '<option value="overview">Stream Overview</option>';
+            const streamData = analysisData[currentStream];
+            const subjectSelect = document.getElementById('subjectSelect');
+            subjectSelect.innerHTML = '<option value="overview">Stream Overview</option>';
+            
+            Object.keys(streamData.subjects).forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+            });
 
-    // Use the JSON passed via Jinja to populate subject options
-    const subjects = processedData ? Object.keys(processedData.stats.subjects) : [];
-    // Ensure this data is being correctly passed from the server!
-    const subjectCodeAndName = JSON.parse('{{ subject_code_and_name | tojson | safe }}'); 
-
-    subjects.forEach(subCode => {
-        const option = document.createElement('option');
-        const subName = subjectCodeAndName[subCode]; // Get the subject name (could be undefined)
-        option.value = subCode;
-        
-        let optionText = subCode; // Start with just the code
-
-        if (subName && subName.trim() !== '') {
-            // Only add the (Subject Name) part if the name is available and not empty
-            optionText = `${subCode} (${subName})`;
+            currentSubject = 'overview';
+            updateSubjectView();
         }
-        
-        option.textContent = optionText;
-        subjectSelect.appendChild(option);
-    });
-
-    currentSubject = 'overview';
-    updateSubjectView();
-}
 
         async function downloadStreamCSV() {
             if (!currentStream) return;
@@ -254,24 +121,20 @@ function processDataForSelection() {
             `;
             
             try {
-                const url = `/download_stream_csv/${encodeURIComponent(currentStream.replace(" ", "_"))}`;
-                const response = await fetch(url);
+                const response = await fetch('/download_stream_csv/' + encodeURIComponent(currentStream));
                 
                 if (!response.ok) {
                     throw new Error('Download failed');
                 }
                 
                 const blob = await response.blob();
-                const downloadUrl = window.URL.createObjectURL(blob);
+                const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
-                a.href = downloadUrl;
-                
-                let filename = currentStream.replace(" ", "_");
-                
-                a.download = filename + '_results.xlsx';
+                a.href = url;
+                a.download = currentStream + '_data.xlsx';
                 document.body.appendChild(a);
                 a.click();
-                window.URL.revokeObjectURL(downloadUrl);
+                window.URL.revokeObjectURL(url);
                 document.body.removeChild(a);
                 
                 downloadBtn.innerHTML = `
@@ -281,7 +144,7 @@ function processDataForSelection() {
                     Downloaded!
                 `;
                 
-                setTimeout(() => {
+                setTimeout(function() {
                     downloadBtn.innerHTML = originalHTML;
                     downloadBtn.disabled = false;
                 }, 2000);
@@ -295,7 +158,7 @@ function processDataForSelection() {
                     Download Failed
                 `;
                 
-                setTimeout(() => {
+                setTimeout(function() {
                     downloadBtn.innerHTML = originalHTML;
                     downloadBtn.disabled = false;
                 }, 2000);
@@ -313,31 +176,31 @@ function processDataForSelection() {
         }
 
         function displayStreamOverview() {
-            const stats = processedData.stats;
+            const streamData = analysisData[currentStream];
             const statsHTML = `
                 <div class="stat-card fade-in">
-                    <div class="stat-value">${stats.appeared}</div>
+                    <div class="stat-value">${streamData.appeared}</div>
                     <div class="stat-label">Total Appeared</div>
                 </div>
                 <div class="stat-card fade-in">
-                    <div class="stat-value">${stats.passed}</div>
+                    <div class="stat-value">${streamData.passed}</div>
                     <div class="stat-label">Total Passed</div>
                 </div>
                 <div class="stat-card fade-in">
-                    <div class="stat-value">${((stats.passed / stats.appeared) * 100).toFixed(1)}%</div>
+                    <div class="stat-value">${((streamData.passed / streamData.appeared) * 100).toFixed(1)}%</div>
                     <div class="stat-label">Pass Rate</div>
                 </div>
                 <div class="stat-card fade-in">
-                    <div class="stat-value">${Object.keys(stats.subjects).length}</div>
+                    <div class="stat-value">${Object.keys(streamData.subjects).length}</div>
                     <div class="stat-label">Subjects</div>
                 </div>
             `;
             document.getElementById('statsContainer').innerHTML = statsHTML;
-            displayStreamCharts(stats);
+            displayStreamCharts(streamData);
         }
 
         function displaySubjectDetails() {
-            const subjectData = processedData.stats.subjects[currentSubject];
+            const subjectData = analysisData[currentStream].subjects[currentSubject];
             
             const passRate = ((subjectData.passed / subjectData.appeared) * 100).toFixed(1);
             
@@ -402,16 +265,15 @@ function processDataForSelection() {
                 }
             };
         }
-
         function getBarChartOptions(type) {
-            const defaultOptions = getChartOptions();
-            const options = {
+             const defaultOptions = getChartOptions();
+             const options = {
                 ...defaultOptions,
                 plugins: {
                     ...defaultOptions.plugins,
                     datalabels: {
                         display: true, 
-                        formatter: (value) => {
+                        formatter: (value, context) => {
                             if (type === 'performance') {
                                 return value; 
                             } else if (type === 'subject-pass-rate') {
@@ -458,13 +320,14 @@ function processDataForSelection() {
                         }
                     },
                     tooltip: {
-                        enabled: false
+                         enabled: false
                     }
                 }
             };
         }
 
-        function displayStreamCharts(stats) {
+
+        function displayStreamCharts(streamData) {
             Object.values(charts).forEach(chart => chart.destroy());
             charts = {};
 
@@ -489,9 +352,8 @@ function processDataForSelection() {
                 </div>
             `;
             document.getElementById('chartsContainer').innerHTML = chartsHTML;
-
-            const gradeLabels = Object.keys(stats.grade_count);
-            const gradeValues = Object.values(stats.grade_count);
+            const gradeLabels = Object.keys(streamData.grade_count);
+            const gradeValues = Object.values(streamData.grade_count);
             const gradeColors = generateColors(gradeLabels.length);
 
             charts.gradeChart = new Chart(document.getElementById('gradeChart'), {
@@ -507,14 +369,13 @@ function processDataForSelection() {
                 },
                 options: getDoughnutPieChartOptions() 
             });
-
             charts.performanceChart = new Chart(document.getElementById('performanceChart'), {
                 type: 'bar',
                 data: {
                     labels: ['Appeared', 'Passed', 'Failed'],
                     datasets: [{
                         label: 'Count',
-                        data: [stats.appeared, stats.passed, stats.appeared - stats.passed],
+                        data: [streamData.appeared, streamData.passed, streamData.appeared - streamData.passed],
                         backgroundColor: ['#667eea', '#4ade80', '#f87171'],
                         borderColor: ['#667eea', '#4ade80', '#f87171'],
                         borderWidth: 1
@@ -535,10 +396,9 @@ function processDataForSelection() {
                     }
                 }
             });
-
-            const subjects = Object.keys(stats.subjects);
+            const subjects = Object.keys(streamData.subjects);
             const passRates = subjects.map(subj => {
-                const data = stats.subjects[subj];
+                const data = streamData.subjects[subj];
                 return ((data.passed / data.appeared) * 100).toFixed(1);
             });
 
@@ -597,7 +457,6 @@ function processDataForSelection() {
                 </div>
             `;
             document.getElementById('chartsContainer').innerHTML = chartsHTML;
-
             charts.subjectGradeChart = new Chart(document.getElementById('subjectGradeChart'), {
                 type: 'pie',
                 data: {
@@ -611,7 +470,6 @@ function processDataForSelection() {
                 },
                 options: getDoughnutPieChartOptions() 
             });
-
             charts.passFailChart = new Chart(document.getElementById('passFailChart'), {
                 type: 'doughnut',
                 data: {

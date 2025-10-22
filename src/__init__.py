@@ -12,7 +12,6 @@ from flask import Flask, render_template, request, send_file, jsonify, session, 
 from os import path as os_path
 from .utils.config import *
 import uuid
-import json
 from random import randint
 from werkzeug.utils import secure_filename
 from src import *
@@ -58,7 +57,6 @@ def handle_error(error):
         "error.html", error_code=error_code, error_details=error_details
     )
 
-
 @app.before_request
 def before_request():
     if (
@@ -67,9 +65,7 @@ def before_request():
         and not any(request.path.startswith(path) for path in excluded_paths)
     ):
         return redirect("/login_page")
-
     
-
 
 @app.route("/signup")
 def signup_page():
@@ -219,20 +215,23 @@ def dd():
     text_parser = TextParser(text, save_folder=ws_out_fold, college_code=college_code)
     f_path = text_parser.extract_data_and_return_as_csv()
     session['f_path'] = f_path
-    a, b_data = text_parser.text_matcher_year_wise()
-    return render_template('dashboard.html', analysis_data=a, subject_code_and_name=text_parser.subj_CODE)
+    a, b_data = text_parser.text_matcher()
+    return render_template('dashboard.html', analysis_data=b_data)
 
 
 @app.route("/download_stream_csv/<stream_name>", methods=["GET"])
 def download_stream_csv(stream_name):
     ws_out_fold = session.get('f_path')
     if not ws_out_fold or not os_path.exists(ws_out_fold):
+        print("here 1")
         return jsonify({"error": "No data available. Please upload a PDF first."}), 404
     csv_filename = f"{stream_name}_results.xlsx"
     csv_path = os_path.join(ws_out_fold, csv_filename)
     
     if not os_path.exists(csv_path):
+        print("here 2")
         return jsonify({"error": f"CSV file for stream {stream_name} not found"}), 404
+    
     return send_file(
         csv_path,
         as_attachment=True,
