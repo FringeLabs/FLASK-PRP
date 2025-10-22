@@ -50,6 +50,23 @@ def send_email_in_background(target_func, *args, **kwargs):
     thread.daemon = True
     thread.start()
 
+@app.errorhandler(Exception)
+def handle_error(error):
+    error_code = getattr(error, "code", 500)
+    error_details = str(error)
+    return render_template(
+        "error.html", error_code=error_code, error_details=error_details
+    )
+
+
+@app.before_request
+def before_request():
+    if (
+        "username" not in session
+        and request.endpoint not in ["login", "login_page"]
+        and not any(request.path.startswith(path) for path in excluded_paths)
+    ):
+        return redirect("/login_page")
 
     
 
@@ -203,8 +220,6 @@ def dd():
     f_path = text_parser.extract_data_and_return_as_csv()
     session['f_path'] = f_path
     a, b_data = text_parser.text_matcher_year_wise()
-    with open("new.json", "w") as f:
-        json.dump(b_data, f, indent=4)
     return render_template('dashboard.html', analysis_data=a, subject_code_and_name=text_parser.subj_CODE)
 
 
