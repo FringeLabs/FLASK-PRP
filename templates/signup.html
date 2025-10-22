@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRP Sign Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
+</head>
+<body>
+    <section>
+        <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span> <span></span>
+
+        <div class="signin">
+            <div class="content">
+                <h2>SIGN UP</h2>
+                <div class="form">
+                    <form id="signupForm">
+                        <div class="inputBox">
+                            <input type="email" id="email" autocomplete="email" required>
+                            <i>Email Address</i>
+                        </div>
+                        <div class="inputBox">
+                            <input type="password" id="password" autocomplete="new-password" required>
+                            <i>Password</i>
+                        </div>
+                        <div class="password-strength-container">
+                            <div id="passwordStrengthBar" class="password-strength-bar"></div>
+                        </div>
+                        <div class="inputBox">
+                            <div class="custom-select">
+                                <input type="text" id="college" autocomplete="off" placeholder=" " required>
+                                <i>College Name</i>
+                                <div class="custom-select-arrow"></div>
+                                <div class="custom-select-options">
+                                    <div class="custom-select-option" data-value="COLLEGE OF ENGINEERING ATTINGAL">COLLEGE OF ENGINEERING ATTINGAL</div>
+<div class="custom-select-option" data-value="ACE COLLEGE OF ENGINEERING">ACE COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="MUSLIM ASSOCIATION COLLEGE OF ENGINEERING">MUSLIM ASSOCIATION COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="LBS INSTITUTE OF TECHNOLOGY FOR WOMEN, POOJAPPURA">LBS INSTITUTE OF TECHNOLOGY FOR WOMEN, POOJAPPURA</div>
+<div class="custom-select-option" data-value="VIDYA ACADEMY OF SCIENCE AND TECHNOLOGY TECHNICAL CAMPUS">VIDYA ACADEMY OF SCIENCE AND TECHNOLOGY TECHNICAL CAMPUS</div>
+<div class="custom-select-option" data-value="LOURDES MATHA COLLEGE OF SCIENCE AND TECHNOLOGY">LOURDES MATHA COLLEGE OF SCIENCE AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="HEERA COLLEGE OF ENGINEERING AND TECHNOLOGY (HCET)">HEERA COLLEGE OF ENGINEERING AND TECHNOLOGY (HCET)</div>
+<div class="custom-select-option" data-value="SARABHAI INSTITUTE OF SCIENCE AND TECHNOLOGY">SARABHAI INSTITUTE OF SCIENCE AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MAR BASELIOS COLLEGE OF ENGINEERING AND TECHNOLOGY">MAR BASELIOS COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="RAJADHANI INSTITUTE OF ENGINEERING AND TECHNOLOGY">RAJADHANI INSTITUTE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="ST. THOMAS INSTITUTE FOR SCIENCE & TECHNOLOGY">ST. THOMAS INSTITUTE FOR SCIENCE & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MUSALIAR COLLEGE OF ENGINEERING">MUSALIAR COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="JOHN COX MEMORIAL CSI INSTITUTE OF TECHNOLOGY">JOHN COX MEMORIAL CSI INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="M G COLLEGE OF ENGINEERING">M G COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="SREE CHITRA THIRUNAL COLLEGE OF ENGINEERING">SREE CHITRA THIRUNAL COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="VALIA KOONAMBAIKULATHAMMA COLLEGE OF ENGINEERING AND TECHNOLOGY">VALIA KOONAMBAIKULATHAMMA COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING TRIVANDRUM">COLLEGE OF ENGINEERING TRIVANDRUM</div>
+<div class="custom-select-option" data-value="MARIAN ENGINEERING COLLEGE">MARIAN ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="TRINITY COLLEGE OF ENGINEERING">TRINITY COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="GOVT. ENGINEERING COLLEGE, BARTON HILL">GOVT. ENGINEERING COLLEGE, BARTON HILL</div>
+<div class="custom-select-option" data-value="MOHANDAS COLLEGE OF ENGINEERING AND TECHNOLOGY">MOHANDAS COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="COLLEGE OF ARCHITECTURE TRIVANDRUM">COLLEGE OF ARCHITECTURE TRIVANDRUM</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING MUTTATHARA">COLLEGE OF ENGINEERING MUTTATHARA</div>
+<div class="custom-select-option" data-value="P.A. AZIZ COLLEGE OF ENGINEERING & TECHNOLOGY">P.A. AZIZ COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="DC SCHOOL OF ARCHITECTURE AND DESIGN, TRIVANDRUM">DC SCHOOL OF ARCHITECTURE AND DESIGN, TRIVANDRUM</div>
+<div class="custom-select-option" data-value="Marian College of Architecture and Planning">Marian College of Architecture and Planning</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING, PATHANAPURAM">COLLEGE OF ENGINEERING, PATHANAPURAM</div>
+<div class="custom-select-option" data-value="COLLEGE  OF  ENGINEERING, KOTTARAKKARA">COLLEGE  OF  ENGINEERING, KOTTARAKKARA</div>
+<div class="custom-select-option" data-value="TRAVANCORE ENGINEERING COLLEGE, OYOOR">TRAVANCORE ENGINEERING COLLEGE, OYOOR</div>
+<div class="custom-select-option" data-value="BASELIOS MATHEWS II COLLEGE OF ENGINEERING">BASELIOS MATHEWS II COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="ER&DCI INSTITUTE OF TECHNOLOGY">ER&DCI INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="DC School of Management and Technology">DC School of Management and Technology</div>
+<div class="custom-select-option" data-value="TKM COLLEGE OF ENGINEERING">TKM COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="BISHOP JEROME INSTITUTE">BISHOP JEROME INSTITUTE</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING PERUMON">COLLEGE OF ENGINEERING PERUMON</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING KARUNAGAPPALLY">COLLEGE OF ENGINEERING KARUNAGAPPALLY</div>
+<div class="custom-select-option" data-value="UKF COLLEGE OF ENGINEERING & TECHNOLOGY">UKF COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="YOUNUS COLLEGE OF ENGINEERING AND TECHNOLOGY">YOUNUS COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="TKM INSTITUTE OF TECHNOLOGY">TKM INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MES INSTITUTE OF TECHNOLOGY AND MANAGEMENT">MES INSTITUTE OF TECHNOLOGY AND MANAGEMENT</div>
+<div class="custom-select-option" data-value="KERALA STATE INSTITUTE OF DESIGN">KERALA STATE INSTITUTE OF DESIGN</div>
+<div class="custom-select-option" data-value="MUSALIAR COLLEGE OF ENGINEERING AND TECHNOLOGY PATHANAMTHITTA">MUSALIAR COLLEGE OF ENGINEERING AND TECHNOLOGY PATHANAMTHITTA</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING ADOOR">COLLEGE OF ENGINEERING ADOOR</div>
+<div class="custom-select-option" data-value="SREE NARAYANA INSTITUTE OF TECHNOLOGY, ADOOR">SREE NARAYANA INSTITUTE OF TECHNOLOGY, ADOOR</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING  KALLOOPPARA">COLLEGE OF ENGINEERING  KALLOOPPARA</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING ARANMULA">COLLEGE OF ENGINEERING ARANMULA</div>
+<div class="custom-select-option" data-value="MOUNT ZION COLLEGE OF ENGINEERING">MOUNT ZION COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="KVM COLLEGE OF  ENGINEERING & IT">KVM COLLEGE OF  ENGINEERING & IT</div>
+<div class="custom-select-option" data-value="CARMEL COLLEGE OF ENGINEERING AND TECHNOLOGY">CARMEL COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING CHERTHALA">COLLEGE OF ENGINEERING CHERTHALA</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING CHENGANNUR">COLLEGE OF ENGINEERING CHENGANNUR</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING AND MANAGEMENT, PUNNAPRA">COLLEGE OF ENGINEERING AND MANAGEMENT, PUNNAPRA</div>
+<div class="custom-select-option" data-value="PROVIDENCE COLLEGE OF ENGINEERING">PROVIDENCE COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="MAHAGURU INSTITUTE OF TECHNOLOGY">MAHAGURU INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="SREE BUDDHA COLLEGE OF ENGINEERING, PATTOOR">SREE BUDDHA COLLEGE OF ENGINEERING, PATTOOR</div>
+<div class="custom-select-option" data-value="ST.THOMAS COLLEGE OF ENGINEERING & TECHNOLOGY CHENGANNUR">ST.THOMAS COLLEGE OF ENGINEERING & TECHNOLOGY CHENGANNUR</div>
+<div class="custom-select-option" data-value="MOUNT ZION INSTITUTE OF SCIENCE AND TECHNOLOGY">MOUNT ZION INSTITUTE OF SCIENCE AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="SAINTGITS COLLEGE OF ENGINEERING">SAINTGITS COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="MANGALAM COLLEGE OF ENGINEERING">MANGALAM COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="ST JOSEPHS COLLEGE OF ENGINEERING  AND TECHNOLOGY PALAI">ST JOSEPHS COLLEGE OF ENGINEERING  AND TECHNOLOGY PALAI</div>
+<div class="custom-select-option" data-value="AMAL JYOTHI COLLEGE OF ENGINEERING">AMAL JYOTHI COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="RAJIV GANDHI INSTITUTE OF TECHNOLOGY,KOTTAYAM">RAJIV GANDHI INSTITUTE OF TECHNOLOGY,KOTTAYAM</div>
+<div class="custom-select-option" data-value="TOMS COLLEGE OF ENGINEERING">TOMS COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING,POONJAR">COLLEGE OF ENGINEERING,POONJAR</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING KIDANGOOR">COLLEGE OF ENGINEERING KIDANGOOR</div>
+<div class="custom-select-option" data-value="KOTTAYAM INSTITUTE OF TECHNOLOGY AND SCIENCE">KOTTAYAM INSTITUTE OF TECHNOLOGY AND SCIENCE</div>
+<div class="custom-select-option" data-value="GREGORIAN INSTITUTE OF TECHNOLOGY">GREGORIAN INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="AL AZHAR COLLEGE OF ENGINEERING AND TECHNOLOGY">AL AZHAR COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MAR BASELIOS CHRISTIAN COLLEGE OF ENGINEERING & TECHNOLOGY">MAR BASELIOS CHRISTIAN COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="GOVERNMENT ENGINEERING COLLEGE IDUKKI">GOVERNMENT ENGINEERING COLLEGE IDUKKI</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING MUNNAR">COLLEGE OF ENGINEERING MUNNAR</div>
+<div class="custom-select-option" data-value="UNIVERSITY COLLEGE OF ENGINEERING">UNIVERSITY COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="FEDERAL INSTITUTE OF SCIENCE AND TECHNOLOGY (FISAT)">FEDERAL INSTITUTE OF SCIENCE AND TECHNOLOGY (FISAT)</div>
+<div class="custom-select-option" data-value="ADI SHANKARA INSTITUTE OF ENGG AND TECHNOLOGY">ADI SHANKARA INSTITUTE OF ENGG AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="ILAHIA COLLEGE OF ENGINEERING & TECHNOLOGY">ILAHIA COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MODEL ENGINEERING COLLEGE">MODEL ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="SNM INSTITUTE OF MANAGEMENT AND TECHNOLOGY">SNM INSTITUTE OF MANAGEMENT AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MUTHOOT INSTITUTE OF TECHNOLOGY & SCIENCE">MUTHOOT INSTITUTE OF TECHNOLOGY & SCIENCE</div>
+<div class="custom-select-option" data-value="INDIRA GANDHI INSTITUTE OF ENGINEERING & TECHNOLOGY">INDIRA GANDHI INSTITUTE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="TOC H INSTITUTE OF SCIENCE & TECHNOLOGY">TOC H INSTITUTE OF SCIENCE & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="VISWAJYOTHI COLLEGE OF ENGINEERING & TECHNOLOGY">VISWAJYOTHI COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="KMEA ENGINEERING COLLEGE">KMEA ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="SREE NARAYANA GURUKULAM COLLEGE OF ENGINEERING">SREE NARAYANA GURUKULAM COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="MENTOR ACADEMY FOR DESIGN ENTREPRENEURSHIP INNOVATION AND TECHNOLOGY">MENTOR ACADEMY FOR DESIGN ENTREPRENEURSHIP INNOVATION AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="SNGIST GROUP OF INSTITUTIONS">SNGIST GROUP OF INSTITUTIONS</div>
+<div class="custom-select-option" data-value="MAR BASELIOS INSTITUTE OF TECHNOLOGY AND SCIENCE">MAR BASELIOS INSTITUTE OF TECHNOLOGY AND SCIENCE</div>
+<div class="custom-select-option" data-value="ALBERTIAN INSTITUTE OF SCIENCE AND TECHNOLOGY (AISAT)- TECHNICAL CAMPUS">ALBERTIAN INSTITUTE OF SCIENCE AND TECHNOLOGY (AISAT)- TECHNICAL CAMPUS</div>
+<div class="custom-select-option" data-value="MAR ATHANASIUS COLLEGE OF ENGINEERING, KOTHAMANGALAM">MAR ATHANASIUS COLLEGE OF ENGINEERING, KOTHAMANGALAM</div>
+<div class="custom-select-option" data-value="SCMS SCHOOL OF ENGINEERING AND TECHNOLOGY">SCMS SCHOOL OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="RAJAGIRI SCHOOL OF ENGINEERING & TECHNOLOGY">RAJAGIRI SCHOOL OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MES COLLEGE OF ENGINEERING & TECHNOLOGY">MES COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="VISAT  ENGINEERING COLLEGE">VISAT  ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="JAIBHARATH COLLEGE OF MANAGEMENT & ENGINEERING TECHNOLOGY">JAIBHARATH COLLEGE OF MANAGEMENT & ENGINEERING TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MGM COLLEGE OF ENGINEERING AND TECHNOLOGY">MGM COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="CHRIST KNOWLEDGE CITY">CHRIST KNOWLEDGE CITY</div>
+<div class="custom-select-option" data-value="SAHRDAYA COLLEGE OF ENGINEERING & TECHNOLOGY">SAHRDAYA COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MALABAR COLLEGE OF ENGINEERING & TECHNOLOGY">MALABAR COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="VIDYA ACADEMY OF SCIENCE AND TECHNOLOGY">VIDYA ACADEMY OF SCIENCE AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MET'S SCHOOL OF ENGINEERING, MALA">MET'S SCHOOL OF ENGINEERING, MALA</div>
+<div class="custom-select-option" data-value="UNIVERSAL ENGINEERING COLLEGE">UNIVERSAL ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="JYOTHI ENGINEERING COLLEGE">JYOTHI ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="NEHRU COLLEGE OF ENGINEERING AND RESEARCH CENTRE">NEHRU COLLEGE OF ENGINEERING AND RESEARCH CENTRE</div>
+<div class="custom-select-option" data-value="CHRIST COLLEGE OF ENGINEERING">CHRIST COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="HOLY GRACE ACADEMY OF ENGINEERING">HOLY GRACE ACADEMY OF ENGINEERING</div>
+<div class="custom-select-option" data-value="ICCS COLLEGE OF ENGINEERING AND MANAGEMENT">ICCS COLLEGE OF ENGINEERING AND MANAGEMENT</div>
+<div class="custom-select-option" data-value="ROYAL COLLEGE OF ENGINEERING & TECHNOLOGY">ROYAL COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="GOVERNMENT ENGINEERING COLLEGE THRISSUR">GOVERNMENT ENGINEERING COLLEGE THRISSUR</div>
+<div class="custom-select-option" data-value="THEJUS ENGINEERING COLLEGE">THEJUS ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="NIRMALA COLLEGE OF ENGINEERING TECHNOLOGY AND MANAGEMENT">NIRMALA COLLEGE OF ENGINEERING TECHNOLOGY AND MANAGEMENT</div>
+<div class="custom-select-option" data-value="IES COLLEGE OF ENGINEERING">IES COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="Rajadhani Institute of Science and Technology">Rajadhani Institute of Science and Technology</div>
+<div class="custom-select-option" data-value="SREEPATHY INSTITUTE OF MANAGEMENT AND TECHNOLOGY">SREEPATHY INSTITUTE OF MANAGEMENT AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="AL-AMEEN COLLEGE, KULAPPULLY, SHORANUR-2">AL-AMEEN COLLEGE, KULAPPULLY, SHORANUR-2</div>
+<div class="custom-select-option" data-value="NSS COLLEGE OF ENGINEERING">NSS COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="AHALIA SCHOOL OF ENGINEERING AND TECHNOLOGY">AHALIA SCHOOL OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="JAWAHARLAL COLLEGE OF ENGINEERING AND TECHNOLOGY">JAWAHARLAL COLLEGE OF ENGINEERING AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="GOVERNMENT ENGINEERING COLLEGE SREEKRISHNAPURAM">GOVERNMENT ENGINEERING COLLEGE SREEKRISHNAPURAM</div>
+<div class="custom-select-option" data-value="MGM TECHNOLOGICAL CAMPUS">MGM TECHNOLOGICAL CAMPUS</div>
+<div class="custom-select-option" data-value="VEDAVYASA INSTITUTE OF TECHNOLOGY">VEDAVYASA INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="MEA ENGINEERING COLLEGE, PERINTHALMANNA">MEA ENGINEERING COLLEGE, PERINTHALMANNA</div>
+<div class="custom-select-option" data-value="ERANAD KNOWLEDGECITY TECHNICAL CAMPUS">ERANAD KNOWLEDGECITY TECHNICAL CAMPUS</div>
+<div class="custom-select-option" data-value="MES COLLEGE OF ENGINEERING, KUTTIPPURAM">MES COLLEGE OF ENGINEERING, KUTTIPPURAM</div>
+<div class="custom-select-option" data-value="KMCT COLLEGE OF HOTEL MANAGEMENT AND CATERING TECHNOLOGY">KMCT COLLEGE OF HOTEL MANAGEMENT AND CATERING TECHNOLOGY</div>
+<div class="custom-select-option" data-value="KMCT INSTITUTE OF TECHNOLOGY AND MANAGEMENT">KMCT INSTITUTE OF TECHNOLOGY AND MANAGEMENT</div>
+<div class="custom-select-option" data-value="KMCT Institute of Engineering and Management">KMCT Institute of Engineering and Management</div>
+<div class="custom-select-option" data-value="KMCT COLLEGE OF ENGINEERING">KMCT COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="KMCT COLLEGE OF ENGINEERING FOR WOMEN">KMCT COLLEGE OF ENGINEERING FOR WOMEN</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING VADAKARA">COLLEGE OF ENGINEERING VADAKARA</div>
+<div class="custom-select-option" data-value="AWH ENGINEERING COLLEGE">AWH ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="M.DASAN INSTITUTE OF TECHNOLOGY">M.DASAN INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="GOVT. ENGINEERING COLLEGE, KOZHIKODE">GOVT. ENGINEERING COLLEGE, KOZHIKODE</div>
+<div class="custom-select-option" data-value="KMCT INSTITUTE OF EMERGING TECHNOLOGY AND MANAGEMENT">KMCT INSTITUTE OF EMERGING TECHNOLOGY AND MANAGEMENT</div>
+<div class="custom-select-option" data-value="KMCT College of Technology and Management">KMCT College of Technology and Management</div>
+<div class="custom-select-option" data-value="GOVERNMENT ENGINEERING COLLEGE, WAYANAD">GOVERNMENT ENGINEERING COLLEGE, WAYANAD</div>
+<div class="custom-select-option" data-value="VIMALJYOTHI ENGINEERING COLLEGE">VIMALJYOTHI ENGINEERING COLLEGE</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING, THALASSERY">COLLEGE OF ENGINEERING, THALASSERY</div>
+<div class="custom-select-option" data-value="MALABAR INSTITUTE OF TECHNOLOGY">MALABAR INSTITUTE OF TECHNOLOGY</div>
+<div class="custom-select-option" data-value="GOVERNMENT COLLEGE OF ENGINEERING KANNUR">GOVERNMENT COLLEGE OF ENGINEERING KANNUR</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING & TECHNOLOGY-PAYYANUR">COLLEGE OF ENGINEERING & TECHNOLOGY-PAYYANUR</div>
+<div class="custom-select-option" data-value="ST.THOMAS COLLEGE OF ENGINEERING AND  TECHNOLOGY, MATTANUR">ST.THOMAS COLLEGE OF ENGINEERING AND  TECHNOLOGY, MATTANUR</div>
+<div class="custom-select-option" data-value="SREE NARAYANA GURU COLLEGE OF ENGINEERING & TECHNOLOGY">SREE NARAYANA GURU COLLEGE OF ENGINEERING & TECHNOLOGY</div>
+<div class="custom-select-option" data-value="LBS COLLEGE OF ENGINEERING">LBS COLLEGE OF ENGINEERING</div>
+<div class="custom-select-option" data-value="COLLEGE OF ENGINEERING TRIKARIPUR">COLLEGE OF ENGINEERING TRIKARIPUR</div>
+<div class="custom-select-option" data-value="NATIONAL INSTITUTE OF ELECTRONICS & INFORMATION TECHNOLOGY (NIELIT), CALICUT">NATIONAL INSTITUTE OF ELECTRONICS & INFORMATION TECHNOLOGY (NIELIT), CALICUT</div>
+<div class="custom-select-option" data-value="KUNIYA COLLEGE OF MANAGEMENT AND TECHNOLOGY">KUNIYA COLLEGE OF MANAGEMENT AND TECHNOLOGY</div>
+<div class="custom-select-option" data-value="KMCT College of Engineering and Management">KMCT College of Engineering and Management</div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputBox">
+                            <input type="submit" value="Sign Up">
+                        </div>
+                    </form>
+                    <div class="error" id="errorMsg"></div>
+                    <div id="successMessage" class="success-message" style="display: none;">
+                        <h3>🎉 Request Sent!</h3>
+                        <p>Your registration request has been submitted. Please check your mail for verification link.</p>
+                    </div>
+                    <small class="fringe-labs-text">
+                        Made with love ❤️ by <a href="https://github.com/FringeLabs/" target="_blank">FringeLabs</a>
+                    </small>
+                </div>
+                <div class="login-link">
+                    Already have a account? <a href="/login_page"><b>Log in</b></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const passwordInput = document.getElementById('password');
+        const emailInput = document.getElementById('email');
+        const strengthBar = document.getElementById('passwordStrengthBar');
+        const errorMsg = document.getElementById('errorMsg');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        // Custom Select Functionality
+        const collegeInput = document.getElementById('college');
+        const customSelect = document.querySelector('.custom-select');
+        const selectOptions = document.querySelector('.custom-select-options');
+        const options = document.querySelectorAll('.custom-select-option');
+
+        collegeInput.addEventListener('click', function() {
+            customSelect.classList.toggle('active');
+        });
+
+        collegeInput.addEventListener('input', function() {
+            const searchValue = this.value.toLowerCase();
+            let hasVisibleOptions = false;
+
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchValue)) {
+                    option.classList.remove('hidden');
+                    hasVisibleOptions = true;
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+
+            if (hasVisibleOptions) {
+                customSelect.classList.add('active');
+            }
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', function() {
+                collegeInput.value = this.dataset.value;
+                customSelect.classList.remove('active');
+                options.forEach(opt => opt.classList.remove('hidden'));
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!customSelect.contains(e.target)) {
+                customSelect.classList.remove('active');
+            }
+        });
+
+        function checkPasswordStrength(password) {
+            let score = 0;
+            if (!password) {
+                return { score: 0, color: 'transparent' };
+            }
+            if (password.length >= 8) score += 20;
+            if (password.length >= 12) score += 20;
+            if (/[a-z]/.test(password)) score += 10;
+            if (/[A-Z]/.test(password)) score += 10;
+            if (/[0-9]/.test(password)) score += 15;
+            if (/[^A-Za-z0-9\s]/.test(password)) score += 15;
+
+            let barColor = 'transparent';
+
+            if (score < 40) {
+                barColor = 'red';
+            } else if (score < 80) {
+                barColor = 'orange';
+            } else {
+                barColor = 'lime'; 
+            }
+
+            score = Math.min(score, 100);
+
+            return { score, color: barColor };
+        }
+        
+        passwordInput.addEventListener('input', function() {
+            const result = checkPasswordStrength(this.value);
+            
+            strengthBar.style.width = result.score + '%';
+            strengthBar.style.backgroundColor = result.color;
+            if (this.value.length === 0) {
+                 strengthBar.style.width = '0%';
+                 strengthBar.style.backgroundColor = 'transparent';
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            errorMsg.innerText = ''; 
+            const email = emailInput.value.trim();
+            if (!emailRegex.test(email)) {
+                errorMsg.innerText = '⚠️ Please enter a valid email address format.';
+                emailInput.focus();
+                return;
+            }
+
+            const password = document.getElementById('password').value;
+            
+            if (password.length < 8) {
+                errorMsg.innerText = '⚠️ Password must be at least 8 characters long.';
+                passwordInput.focus();
+                return;
+            }
+            
+            const data = {
+                email: email,
+                password: password,
+                college: document.getElementById('college').value
+            };
+
+            try {
+                const response = await fetch('/signup_api', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                console.log(result);
+
+                if (result.error) {
+                    errorMsg.innerText = result.error;
+                } else {
+                    errorMsg.innerText = '';
+                    document.getElementById('signupForm').style.display = 'none';
+                    document.getElementById('successMessage').style.display = 'block';
+                }
+            } catch (error) {
+                errorMsg.innerText = 'Network error. Please try again. ';
+            }
+        });
+    </script>
+</body>
+</html>

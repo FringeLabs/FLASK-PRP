@@ -1,0 +1,9 @@
+*.pyc
+/tmp
+/upload
+*.pdf
+*.csv
+*.zip
+*.json
+.env
+scripts/test.py

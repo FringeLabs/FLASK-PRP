@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invite Success!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/invite.css') }}">
+    <style>
+    </style>
+</head>
+<body>
+    <section>
+        {% for i in range(200) %}
+        <span></span>
+        {% endfor %}
+        <div class="signin">
+            <div class="content">
+                <h2>Invitation Approved 🎉</h2>
+                <p>Congratulations! Your invite request has been approved. <br>
+                   You can now proceed to log in and access your account.</p>
+                <a href="/login_page" class="login-btn">Go to Login</a>
+
+                <div class="fringe-labs-text">
+                    Made with love ❤️ by <a href="https://github.com/FringeLabs/" target="_blank">FringeLabs</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

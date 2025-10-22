@@ -1,0 +1,9 @@
+pyyaml
+pypdf2
+flask
+flask-socketIO
+python-dotenv
+passlib
+gunicorn
+openpyxl
+pymongo

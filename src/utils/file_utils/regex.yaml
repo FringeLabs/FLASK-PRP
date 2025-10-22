@@ -1,0 +1,5 @@
+exam_centre_pattern: 'Exam Centre:\s*(.+)'
+btech_exam_pattern: '(B\.Tech.*)'
+course_code_pattern: '(\w+)\(([A-Z][+A-Z]*|Absent)\)'
+student_id_pattern: '\d+)\s+((?:\w+\(([A-Z][+A-Z]*|Absent)\),?\s*)+)'
+college_code_pattern: '\b([A-Z]{2,6})\d{2,4}[A-Z]{2,4}\d{2,5}\b'

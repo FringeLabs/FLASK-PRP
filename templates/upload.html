@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="static/css/upload.css">
+</head>
+<body class="flex items-center justify-center min-h-screen bg-gray-50">
+
+    <div class="w-full max-w-lg bg-white p-8 md:p-10 shadow-2xl rounded-xl">
+        <h1 class="text-3xl font-bold text-gray-900 mb-6 border-b pb-3 text-center">
+            {{ project_name }}
+        </h1>
+        <p class="text-gray-500 mb-8 text-center">
+            Upload your Result PDF file to continue
+        </p>
+
+        <form id="uploadForm" action="/dashboard" method="post" enctype="multipart/form-data" class="space-y-6">
+            <div>
+                <label for="file-upload" class="block text-sm font-medium text-gray-700 mb-2">
+                    Select PDF File (.pdf)
+                </label>
+                <input type="file" id="file-upload" name="file" accept=".pdf" required>
+            </div>
+
+            <div>
+                <label for="college_code" class="block text-sm font-medium text-gray-700 mb-1">
+                    College Code (Optional) (If left blank, the system will attempt to predict it)
+                </label>
+                <input
+                    type="text"
+                    name="college_code"
+                    id="college_code"
+                    placeholder="e.g., NSS, GECP, etc."
+                    class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 
+                           focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm transition duration-150"
+                >
+            </div>
+
+            <div>
+                <button
+                    type="submit"
+                    class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm 
+                           text-lg font-medium text-white bg-indigo-600 hover:bg-indigo-700 
+                           focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 
+                           transition duration-150 ease-in-out transform hover:scale-[1.01]"
+                >
+                    <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" 
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12">
+                        </path>
+                    </svg>
+                    Upload Document & Show Dashboard
+                </button>
+            </div>
+        </form>
+
+        <small class="block text-center text-xs text-gray-500 mt-6 pt-4 border-t border-gray-100">
+            Made with love ❤️ by
+            <a href="https://github.com/FringeLabs/" target="_blank" class="text-indigo-600 hover:text-indigo-500 hover:underline font-medium">
+                FringeLabs
+            </a>
+        </small>
+    </div>
+
+</body>
+</html>

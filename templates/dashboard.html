@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Analytics Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+    <link rel="stylesheet" href="static/css/dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Academic Analytics Dashboard</h1>
+        <p class="subtitle">
+    Made with ❤️ by 
+    <a href="https://github.com/FringeLabs" target="_blank" style="color: #a5b4fc; text-decoration: none; font-weight: 500;">
+        FringeLabs
+    </a>
+</p>
+        <div class="controls">
+            <div class="control-group">
+                <label for="streamSelect">Select Stream</label>
+                <select id="streamSelect" onchange="updateDashboard()">
+                    <option value="">-- Choose Stream --</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label for="subjectSelect">Select Subject</label>
+                <select id="subjectSelect" onchange="updateSubjectView()">
+                    <option value="overview">Stream Overview</option>
+                </select>
+            </div>
+        </div>
+
+        <button id="downloadBtn" class="download-btn" onclick="downloadStreamCSV()" disabled>
+            <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+            </svg>
+            Download Stream Data
+        </button>
+
+        <div id="statsContainer" class="stats-grid"></div>
+        <div id="chartsContainer" class="charts-container"></div>
+    </div>
+
+    <script>
+        let analysisData = null;
+        let currentStream = '';
+        let currentSubject = 'overview';
+        let charts = {};
+        
+        Chart.register(ChartDataLabels);
+
+        async function loadData() {
+                analysisData = JSON.parse('{{ analysis_data | tojson | safe }}');
+                populateStreamSelect();
+        }
+
+        function populateStreamSelect() {
+            const streamSelect = document.getElementById('streamSelect');
+            streamSelect.innerHTML = '<option value="">-- Choose Stream --</option>';
+            
+            Object.keys(analysisData).forEach(stream => {
+                const option = document.createElement('option');
+                option.value = stream;
+                option.textContent = stream;
+                streamSelect.appendChild(option);
+            });
+        }
+
+        function updateDashboard() {
+            currentStream = document.getElementById('streamSelect').value;
+            const downloadBtn = document.getElementById('downloadBtn');
+            
+            if (!currentStream) {
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = `
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                    </svg>
+                    Download Stream Data
+                `;
+                return;
+            }
+
+            downloadBtn.disabled = false;
+            downloadBtn.innerHTML = `
+                <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"></path>
+                </svg>
+                Download ${currentStream} Data
+            `;
+
+            const streamData = analysisData[currentStream];
+            const subjectSelect = document.getElementById('subjectSelect');
+            subjectSelect.innerHTML = '<option value="overview">Stream Overview</option>';
+            
+            Object.keys(streamData.subjects).forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+            });
+
+            currentSubject = 'overview';
+            updateSubjectView();
+        }
+
+        async function downloadStreamCSV() {
+            if (!currentStream) return;
+            
+            const downloadBtn = document.getElementById('downloadBtn');
+            const originalHTML = downloadBtn.innerHTML;
+            
+            downloadBtn.disabled = true;
+            downloadBtn.innerHTML = `
+                <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" opacity="0.25"></circle>
+                </svg>
+                Downloading...
+            `;
+            
+            try {
+                const response = await fetch('/download_stream_csv/' + encodeURIComponent(currentStream));
+                
+                if (!response.ok) {
+                    throw new Error('Download failed');
+                }
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = currentStream + '_data.xlsx';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                downloadBtn.innerHTML = `
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    Downloaded!
+                `;
+                
+                setTimeout(function() {
+                    downloadBtn.innerHTML = originalHTML;
+                    downloadBtn.disabled = false;
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Download error:', error);
+                downloadBtn.innerHTML = `
+                    <svg class="download-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    Download Failed
+                `;
+                
+                setTimeout(function() {
+                    downloadBtn.innerHTML = originalHTML;
+                    downloadBtn.disabled = false;
+                }, 2000);
+            }
+        }
+
+        function updateSubjectView() {
+            currentSubject = document.getElementById('subjectSelect').value;
+            
+            if (currentSubject === 'overview') {
+                displayStreamOverview();
+            } else {
+                displaySubjectDetails();
+            }
+        }
+
+        function displayStreamOverview() {
+            const streamData = analysisData[currentStream];
+            const statsHTML = `
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${streamData.appeared}</div>
+                    <div class="stat-label">Total Appeared</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${streamData.passed}</div>
+                    <div class="stat-label">Total Passed</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${((streamData.passed / streamData.appeared) * 100).toFixed(1)}%</div>
+                    <div class="stat-label">Pass Rate</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${Object.keys(streamData.subjects).length}</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+            `;
+            document.getElementById('statsContainer').innerHTML = statsHTML;
+            displayStreamCharts(streamData);
+        }
+
+        function displaySubjectDetails() {
+            const subjectData = analysisData[currentStream].subjects[currentSubject];
+            
+            const passRate = ((subjectData.passed / subjectData.appeared) * 100).toFixed(1);
+            
+            const statsHTML = `
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${subjectData.appeared}</div>
+                    <div class="stat-label">Appeared</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${subjectData.passed}</div>
+                    <div class="stat-label">Passed</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${passRate}%</div>
+                    <div class="stat-label">Pass Rate</div>
+                </div>
+                <div class="stat-card fade-in">
+                    <div class="stat-value">${currentSubject}</div>
+                    <div class="stat-label">Subject Code</div>
+                </div>
+            `;
+            document.getElementById('statsContainer').innerHTML = statsHTML;
+
+            displaySubjectCharts(subjectData);
+        }
+
+        function getDoughnutPieChartOptions() {
+            return {
+                ...getChartOptions(),
+                plugins: {
+                    ...getChartOptions().plugins,
+                    datalabels: {
+                        display: false
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#a5b4fc',
+                            padding: 15,
+                            font: { size: 12 },
+                            generateLabels: (chart) => {
+                                const data = chart.data;
+                                if (data.labels.length && data.datasets.length) {
+                                    const total = data.datasets[0].data.reduce((sum, value) => sum + value, 0);
+                                    return data.labels.map((label, i) => {
+                                        const value = data.datasets[0].data[i];
+                                        const percentage = ((value / total) * 100).toFixed(1);
+                                        return {
+                                            text: `${label} (${percentage}%)`,
+                                            fillStyle: data.datasets[0].backgroundColor[i],
+                                            strokeStyle: data.datasets[0].borderColor,
+                                            lineWidth: data.datasets[0].borderWidth,
+                                            hidden: !chart.isDatasetVisible(0) || data.datasets[0].data[i] === 0,
+                                            index: i
+                                        };
+                                    });
+                                }
+                                return [];
+                            }
+                        }
+                    }
+                }
+            };
+        }
+        function getBarChartOptions(type) {
+             const defaultOptions = getChartOptions();
+             const options = {
+                ...defaultOptions,
+                plugins: {
+                    ...defaultOptions.plugins,
+                    datalabels: {
+                        display: true, 
+                        formatter: (value, context) => {
+                            if (type === 'performance') {
+                                return value; 
+                            } else if (type === 'subject-pass-rate') {
+                                return value + '%';
+                            }
+                            return value;
+                        },
+                        color: '#fff',
+                        anchor: 'center',
+                        align: 'center',
+                        font: {
+                            weight: 'bold',
+                            size: 12
+                        },
+                        display: (context) => {
+                            return context.dataset.data[context.dataIndex] !== 0; 
+                        }
+                    }
+                },
+                layout: {
+                    padding: {
+                        top: 20,
+                        right: type === 'subject-pass-rate' ? 20 : 0,
+                        bottom: 0,
+                        left: 0
+                    }
+                }
+            };
+            options.plugins.tooltip = { enabled: false };
+            return options;
+        }
+
+        function getChartOptions() {
+            return {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#a5b4fc',
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    },
+                    tooltip: {
+                         enabled: false
+                    }
+                }
+            };
+        }
+
+
+        function displayStreamCharts(streamData) {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            const chartsHTML = `
+                <div class="chart-card fade-in">
+                    <div class="chart-title">Grade Distribution</div>
+                    <div class="chart-wrapper">
+                        <canvas id="gradeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card fade-in">
+                    <div class="chart-title">Performance Overview</div>
+                    <div class="chart-wrapper">
+                        <canvas id="performanceChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card fade-in">
+                    <div class="chart-title">Subject-wise Pass Rate</div>
+                    <div class="chart-wrapper">
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                </div>
+            `;
+            document.getElementById('chartsContainer').innerHTML = chartsHTML;
+            const gradeLabels = Object.keys(streamData.grade_count);
+            const gradeValues = Object.values(streamData.grade_count);
+            const gradeColors = generateColors(gradeLabels.length);
+
+            charts.gradeChart = new Chart(document.getElementById('gradeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: gradeLabels,
+                    datasets: [{
+                        data: gradeValues,
+                        backgroundColor: gradeColors,
+                        borderColor: 'rgba(30, 41, 59, 0.8)',
+                        borderWidth: 2
+                    }]
+                },
+                options: getDoughnutPieChartOptions() 
+            });
+            charts.performanceChart = new Chart(document.getElementById('performanceChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Appeared', 'Passed', 'Failed'],
+                    datasets: [{
+                        label: 'Count',
+                        data: [streamData.appeared, streamData.passed, streamData.appeared - streamData.passed],
+                        backgroundColor: ['#667eea', '#4ade80', '#f87171'],
+                        borderColor: ['#667eea', '#4ade80', '#f87171'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...getBarChartOptions('performance'), 
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(139, 146, 176, 0.1)' },
+                            ticks: { color: '#8b92b0' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#8b92b0' }
+                        }
+                    }
+                }
+            });
+            const subjects = Object.keys(streamData.subjects);
+            const passRates = subjects.map(subj => {
+                const data = streamData.subjects[subj];
+                return ((data.passed / data.appeared) * 100).toFixed(1);
+            });
+
+            charts.subjectChart = new Chart(document.getElementById('subjectChart'), {
+                type: 'bar',
+                data: {
+                    labels: subjects,
+                    datasets: [{
+                        label: 'Pass Rate (%)',
+                        data: passRates,
+                        backgroundColor: '#764ba2',
+                        borderColor: '#764ba2',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    ...getBarChartOptions('subject-pass-rate'), 
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(139, 146, 176, 0.1)' },
+                            ticks: { color: '#8b92b0' }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#8b92b0' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function displaySubjectCharts(subjectData) {
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            const grades = Object.keys(subjectData).filter(key => key.startsWith('no_of_') && key.endsWith('_grades'));
+            const gradeLabels = grades.map(g => g.replace('no_of_', '').replace('_grades', '').toUpperCase());
+            const gradeValues = grades.map(g => subjectData[g]);
+            const gradeColors = generateColors(gradeLabels.length);
+
+            const chartsHTML = `
+                <div class="chart-card fade-in">
+                    <div class="chart-title">Grade Distribution</div>
+                    <div class="chart-wrapper">
+                        <canvas id="subjectGradeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card fade-in">
+                    <div class="chart-title">Pass/Fail Analysis</div>
+                    <div class="chart-wrapper">
+                        <canvas id="passFailChart"></canvas>
+                    </div>
+                </div>
+            `;
+            document.getElementById('chartsContainer').innerHTML = chartsHTML;
+            charts.subjectGradeChart = new Chart(document.getElementById('subjectGradeChart'), {
+                type: 'pie',
+                data: {
+                    labels: gradeLabels,
+                    datasets: [{
+                        data: gradeValues,
+                        backgroundColor: gradeColors,
+                        borderColor: 'rgba(30, 41, 59, 0.8)',
+                        borderWidth: 2
+                    }]
+                },
+                options: getDoughnutPieChartOptions() 
+            });
+            charts.passFailChart = new Chart(document.getElementById('passFailChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Passed', 'Failed'],
+                    datasets: [{
+                        data: [subjectData.passed, subjectData.appeared - subjectData.passed],
+                        backgroundColor: ['#4ade80', '#f87171'],
+                        borderColor: 'rgba(30, 41, 59, 0.8)',
+                        borderWidth: 2
+                    }]
+                },
+                options: getDoughnutPieChartOptions() 
+            });
+        }
+
+        function generateColors(count) {
+            const colors = [
+                '#667eea', '#764ba2', '#f093fb', '#4facfe',
+                '#43e97b', '#fa709a', '#fee140', '#30cfd0',
+                '#a8edea', '#fed6e3', '#f5576c', '#4b79a1'
+            ];
+            return colors.slice(0, count);
+        }
+
+        loadData();
+    </script>
+</body>
+</html>
